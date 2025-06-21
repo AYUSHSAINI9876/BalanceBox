@@ -41,7 +41,8 @@
   display: block;
   object-fit: contain;
   margin: 0 auto;
-  
+   z-index: 1;
+  position: relative;
 }
 
 .sidebar-logo-title {
@@ -54,6 +55,8 @@
   flex-direction: column;
   gap: 18px;
   align-items: center;
+   z-index: 2;
+  position: relative;
 }
 
 .sidebar-link {
