@@ -11,6 +11,7 @@ const app = express();
 app.use(cors({
     origin: ['https://split-mate-two.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+     credentials: true,
   }));
 app.use(express.json());
 
