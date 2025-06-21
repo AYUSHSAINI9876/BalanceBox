@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from 'recharts';
 import './HomePieChart.css';
+import fetchWithAuth from '../../utils/fetchWihAuth';
 
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 const COLORS = ["#2563eb", "#60a5fa", "#38bdf8", "#818cf8", "#fbbf24", "#f87171"];
 
 const HomePieChart = () => {
@@ -11,9 +13,8 @@ const HomePieChart = () => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const token = localStorage.getItem('token');
       try {
-        const res = await fetch('/api/users/categorySummary', { headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetchWithAuth(`${API_BASE}/api/users/categorySummary`);
         const json = await res.json();
         const arr = Object.entries(json.categorySummary || {}).map(([name, value], i) => ({
           name,

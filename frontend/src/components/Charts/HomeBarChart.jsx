@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import './HomeBarchart.css';
+import fetchWithAuth from '../../utils/fetchWihAuth';
 
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 const COLORS = ["#2563eb", "#60a5fa", "#38bdf8", "#818cf8", "#fbbf24", "#f87171"];
 
 const HomeBarChart = () => {
@@ -11,9 +13,8 @@ const HomeBarChart = () => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const token = localStorage.getItem('token');
       try {
-        const res = await fetch('/api/users/recentTripsSummary', { headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetchWithAuth(`${API_BASE}/api/users/recentTripsSummary`);
         const json = await res.json();
         setData(json.summary || []);
       } catch (err) {

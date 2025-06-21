@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './EditExpenseFormStyles.css';
+import fetchWithAuth from '../../utils/fetchWihAuth';
 
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 const defaultCategories = ['food', 'travel', 'stay', 'shopping', 'custom'];
 
 const EditExpenseForm = () => {
@@ -21,10 +23,9 @@ const EditExpenseForm = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const token = localStorage.getItem('token');
         const [membersRes, expenseRes] = await Promise.all([
-          fetch(`/api/trips/${tripId}`, { headers: { Authorization: `Bearer ${token}` } }),
-          fetch(`/api/trips/${tripId}/expenses/${expenseId}`, { headers: { Authorization: `Bearer ${token}` } })
+          fetchWithAuth(`${API_BASE}/api/trips/${tripId}`),
+          fetchWithAuth(`${API_BASE}/api/trips/${tripId}/expenses/${expenseId}`)
         ]);
         const membersJson = await membersRes.json();
         setMembers(membersJson.members || []);
@@ -98,9 +99,9 @@ const EditExpenseForm = () => {
         setLoading(false);
         return;
       }
-      const res = await fetch(`/api/trips/${tripId}/expenses/${expenseId}`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/expenses/${expenseId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           description,
           amount: Number(amount),

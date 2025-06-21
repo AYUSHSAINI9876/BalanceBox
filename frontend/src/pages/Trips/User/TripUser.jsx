@@ -3,7 +3,10 @@ import { useParams } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import TripNavbar from '../../../components/Navbar/TripNavbar';
 import TripUserPieChart from '../../../components/Charts/TripUserPieChart';
+import fetchWithAuth from '../../../utils/fetchWihAuth';
 import './TripUser.css';
+
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const TripUser = () => {
   const { tripId } = useParams();
@@ -16,8 +19,7 @@ const TripUser = () => {
       setLoading(true);
       setError('');
       try {
-        const token = localStorage.getItem('token');
-        const res = await fetch(`/api/trips/${tripId}/my-balances`, { headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/my-balances`);
         if (!res.ok) throw new Error('Could not fetch balances');
         const data = await res.json();
         setBalances(data);

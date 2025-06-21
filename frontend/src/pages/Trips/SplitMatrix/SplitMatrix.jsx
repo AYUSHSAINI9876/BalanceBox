@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import TripNavbar from '../../../components/Navbar/TripNavbar';
+import fetchWithAuth from '../../../utils/fetchWihAuth';
 import './SplitMatrix.css';
+
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const SplitMatrix = () => {
   const { tripId } = useParams();
@@ -16,10 +19,9 @@ const SplitMatrix = () => {
       setLoading(true);
       setError('');
       try {
-        const token = localStorage.getItem('token');
         const [matrixRes, membersRes] = await Promise.all([
-          fetch(`/api/trips/${tripId}/balanceMatrix`, { headers: { Authorization: `Bearer ${token}` } }),
-          fetch(`/api/trips/${tripId}`, { headers: { Authorization: `Bearer ${token}` } })
+          fetchWithAuth(`${API_BASE}/api/trips/${tripId}/balanceMatrix`),
+          fetchWithAuth(`${API_BASE}/api/trips/${tripId}`)
         ]);
         if (!matrixRes.ok || !membersRes.ok) throw new Error('Could not fetch data');
         const matrixJson = await matrixRes.json();

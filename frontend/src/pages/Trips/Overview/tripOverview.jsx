@@ -4,7 +4,10 @@ import Sidebar from '../../../components/Sidebar/Sidebar';
 import TripNavbar from '../../../components/Navbar/TripNavbar';
 import TripOverviewPieChart from '../../../components/Charts/TripOverviewPieChart';
 import TripOverviewBarChart from '../../../components/Charts/TripOverviewBarChart';
+import fetchWithAuth from '../../../utils/fetchWihAuth';
 import './tripOverview.css';
+
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const TripOverview = () => {
   const { tripId } = useParams();
@@ -20,22 +23,21 @@ const TripOverview = () => {
       setLoading(true);
       setError('');
       try {
-        const token = localStorage.getItem('token');
         // Trip details
-        const tripRes = await fetch(`/api/trips/${tripId}`, { headers: { Authorization: `Bearer ${token}` } });
+        const tripRes = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}`);
         if (!tripRes.ok) throw new Error('Trip not found');
         const tripJson = await tripRes.json();
         setTrip(tripJson);
         // Total expense
-        const totalRes = await fetch(`/api/trips/${tripId}/totalExpense`, { headers: { Authorization: `Bearer ${token}` } });
+        const totalRes = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/totalExpense`);
         const totalJson = await totalRes.json();
         setTotalExpense(totalJson.totalExpense || 0);
         // Category pie chart
-        const catRes = await fetch(`/api/trips/${tripId}/category-expenses`, { headers: { Authorization: `Bearer ${token}` } });
+        const catRes = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/category-expenses`);
         const catJson = await catRes.json();
         setCategoryData(catJson.categories || []);
         // Member bar chart
-        const memRes = await fetch(`/api/trips/${tripId}/membersExpenseSummary`, { headers: { Authorization: `Bearer ${token}` } });
+        const memRes = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/membersExpenseSummary`);
         const memJson = await memRes.json();
         setMemberData(memJson.summary || []);
       } catch (err) {

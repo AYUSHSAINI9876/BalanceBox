@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './HomeCards.css';
+import fetchWithAuth from '../../utils/fetchWihAuth';
+
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const HomeCards = () => {
   const [totalTrips, setTotalTrips] = useState(null);
@@ -10,17 +13,16 @@ const HomeCards = () => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const token = localStorage.getItem('token');
       try {
-        const tripsRes = await fetch('/api/users/totalTrips', { headers: { Authorization: `Bearer ${token}` } });
+        const tripsRes = await fetchWithAuth(`${API_BASE}/api/users/totalTrips`);
         const tripsData = await tripsRes.json();
         setTotalTrips(tripsData.totalTrips);
 
-        const friendsRes = await fetch('/api/users/totalFriends', { headers: { Authorization: `Bearer ${token}` } });
+        const friendsRes = await fetchWithAuth(`${API_BASE}/api/users/totalFriends`);
         const friendsData = await friendsRes.json();
         setTotalFriends(friendsData.totalFriends);
 
-        const expenseRes = await fetch('/api/users/totalExpense', { headers: { Authorization: `Bearer ${token}` } });
+        const expenseRes = await fetchWithAuth(`${API_BASE}/api/users/totalExpense`);
         const expenseData = await expenseRes.json();
         setTotalExpense(expenseData.totalExpense);
       } catch (err) {

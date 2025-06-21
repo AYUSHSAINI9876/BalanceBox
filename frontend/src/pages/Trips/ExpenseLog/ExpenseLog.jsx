@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import TripNavbar from '../../../components/Navbar/TripNavbar';
+import fetchWithAuth from '../../../utils/fetchWihAuth';
 import './ExpenseLog.css';
+
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const ExpenseLog = () => {
   const { tripId } = useParams();
@@ -23,8 +26,7 @@ const ExpenseLog = () => {
     setLoading(true);
     setError('');
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`/api/trips/${tripId}/expenses`, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/expenses`);
       if (!res.ok) throw new Error('Could not fetch expenses');
       const data = await res.json();
       setExpenses(data);
@@ -41,10 +43,8 @@ const ExpenseLog = () => {
 
   async function confirmDelete() {
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`/api/trips/${tripId}/expenses/${deleteId}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/expenses/${deleteId}`, {
+        method: 'DELETE'
       });
       if (!res.ok) throw new Error('Could not delete expense');
       setExpenses(expenses => expenses.filter(e => e._id !== deleteId));

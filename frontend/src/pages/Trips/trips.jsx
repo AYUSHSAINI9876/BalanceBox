@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import './trips.css';
+import fetchWithAuth from '../../utils/fetchWihAuth';
+
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const Trips = () => {
   const [trips, setTrips] = useState([]);
@@ -13,8 +16,7 @@ const Trips = () => {
     async function fetchTrips() {
       setLoading(true);
       try {
-        const token = localStorage.getItem('token');
-        const res = await fetch('/api/trips/my-trips', { headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetchWithAuth(`${API_BASE}/api/trips/my-trips`);
         const data = await res.json();
         setTrips(data);
       } catch (err) {

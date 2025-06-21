@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CreateTripForm.css';
+import fetchWithAuth from '../../utils/fetchWihAuth';
+
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const CreateTripForm = () => {
   const [title, setTitle] = useState('');
@@ -17,13 +20,11 @@ const CreateTripForm = () => {
       return;
     }
     setLoading(true);
-    const token = localStorage.getItem('token');
     try {
-      const res = await fetch('/api/trips/create', {
+      const res = await fetchWithAuth(`${API_BASE}/api/trips/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           title: title.trim(),

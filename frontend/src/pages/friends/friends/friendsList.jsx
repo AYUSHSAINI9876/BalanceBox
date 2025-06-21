@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import Friendnavbar from '../../../components/Navbar/Friendnavbar';
+import fetchWithAuth from '../../../utils/fetchWihAuth';
 import './friendsList.css';
+
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const FriendsList = () => {
   const [inputUsername, setInputUsername] = useState('');
@@ -18,8 +21,7 @@ const FriendsList = () => {
     setLoading(true);
     setError('');
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch('/api/users/me/friends-balances', { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetchWithAuth(`${API_BASE}/api/users/me/friends-balances`);
       if (!res.ok) throw new Error('Could not fetch friends');
       const data = await res.json();
       setFriends(data);
@@ -34,10 +36,9 @@ const FriendsList = () => {
     setError('');
     if (!inputUsername) return setError('Please enter a username');
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch('/api/friends/send', {
+      const res = await fetchWithAuth(`${API_BASE}/api/friends/send`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: inputUsername })
       });
       const data = await res.json();

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import './TripUserPieChart.css';
+import fetchWithAuth from '../../utils/fetchWihAuth';
 
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 const COLORS = ["#2563eb", "#60a5fa", "#38bdf8", "#818cf8", "#fbbf24", "#f87171"];
 
 const TripUserPieChart = () => {
@@ -13,9 +15,8 @@ const TripUserPieChart = () => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const token = localStorage.getItem('token');
       try {
-        const res = await fetch(`/api/trips/${tripId}/user/category-expenses`, { headers: { Authorization: `Bearer ${token}` } });
+        const res = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/user/category-expenses`);
         const json = await res.json();
         setData(json.categories || []);
       } catch {

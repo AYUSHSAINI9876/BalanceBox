@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import Friendnavbar from '../../../components/Navbar/Friendnavbar';
+import fetchWithAuth from '../../../utils/fetchWihAuth';
 import './incoming_req.css';
+
+const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const IncomingRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -17,8 +20,7 @@ const IncomingRequests = () => {
     setLoading(true);
     setError('');
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch('/api/friends/incoming', { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetchWithAuth(`${API_BASE}/api/friends/incoming`);
       if (!res.ok) throw new Error('Could not fetch requests');
       const data = await res.json();
       setRequests(data);
@@ -32,10 +34,9 @@ const IncomingRequests = () => {
     setMsg('');
     setError('');
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch('/api/friends/respond', {
+      const res = await fetchWithAuth(`${API_BASE}/api/friends/respond`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ requestId, action })
       });
       const data = await res.json();
