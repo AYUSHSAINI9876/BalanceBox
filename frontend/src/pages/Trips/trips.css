@@ -1,0 +1,198 @@
+/* Layout for Trips page with sidebar */
+.trips-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #eaf1fb 60%, #c7e0fa 100%);
+}
+
+.trips-main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 32px 40px 32px 40px;
+  min-height: 100vh;
+  background: transparent;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.trips-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.trips-heading {
+  color: #1746a2;
+  font-size: 2.3rem;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+  font-family: 'Segoe UI', 'Georgia', serif;
+  text-shadow: 0 2px 8px rgba(37,99,235,0.09);
+  margin-bottom: 0;
+}
+
+.trips-create-btn {
+  background: linear-gradient(90deg, #2563eb 60%, #60a5fa 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.18rem;
+  border: none;
+  border-radius: 14px;
+  padding: 0.8em 2.1em;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(37,99,235,0.10);
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.13s;
+  margin-top: 0px;
+  margin-left: 0;
+ 
+  
+}
+.trips-create-btn:hover {
+  background: linear-gradient(90deg, #1d4ed8 60%, #2563eb 100%);
+  box-shadow: 0 4px 18px rgba(37,99,235,0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+.trips-create-icon {
+  font-size: 1.4em;
+  font-weight: 900;
+}
+
+.trips-search-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  justify-content: space-between;
+}
+.trips-search-input {
+  padding: 0.9em 1.3em;
+  border-radius: 12px;
+  border: 1.7px solid #2563eb;
+  font-size: 1.13rem;
+  outline: none;
+  background: #f7faff;
+  box-shadow: 0 1px 4px rgba(37,99,235,0.04);
+  width: 340px;
+  max-width: 100%;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.trips-search-input:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+}
+.trips-search-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8em 1.3em;
+  font-size: 1.18rem;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 6px rgba(37,99,235,0.13);
+}
+.trips-search-btn:hover {
+  background: #1d4ed8;
+  box-shadow: 0 2px 12px rgba(37,99,235,0.18);
+}
+
+
+.trips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: 65vh;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.trips-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.trip-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.10);
+  padding: 22px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 2px solid #eaf1fb;
+  transition: box-shadow 0.18s, border-color 0.18s, transform 0.15s;
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+.trip-card:hover {
+  box-shadow: 0 8px 32px rgba(37,99,235,0.16);
+  border-color: #60a5fa;
+  transform: translateY(-2px) scale(1.01);
+}
+.trip-title-row {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #2563eb;
+  font-family: 'Segoe UI', 'Georgia', serif;
+  margin-bottom: 2px;
+  letter-spacing: 0.2px;
+}
+.trip-members-row {
+  font-size: 1.08rem;
+  color: #1d3557;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.trip-label {
+  color: #2563eb;
+  font-weight: 600;
+  margin-right: 4px;
+}
+.trip-created-by {
+  position: absolute;
+  right: 22px;
+  bottom: 14px;
+  font-size: 1.01rem;
+  color: #2563eb;
+  font-weight: 600;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  opacity: 0.85;
+}
+.trips-loading, .trips-empty {
+  color: #aaa;
+  font-size: 1.1rem;
+  margin-top: 40px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .trips-main-content {
+    margin-left: 0;
+    padding: 16px 8px 16px 8px;
+  }
+  .trips-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .trips-search-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .trips-list {
+    gap: 12px;
+  }
+  .trip-card {
+    padding: 16px 10px;
+    border-radius: 10px;
+  }
+}

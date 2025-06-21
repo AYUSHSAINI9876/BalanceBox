@@ -1,0 +1,87 @@
+/* Layout for TripUser balances */
+.trip-user-content-row {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  align-items: stretch;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+.trip-user-balances-box {
+  background: #f7faff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.07);
+  padding: 28px 32px;
+  min-width: 320px;
+  max-width: 100%;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  height: 340px;
+  overflow-x: auto;
+}
+.trip-user-section-title {
+  color: #2563eb;
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  letter-spacing: 0.3px;
+  text-align: center;
+  font-family: 'Segoe UI', 'Georgia', serif;
+}
+.trip-user-balance-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+.trip-user-balance-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e3e8f0;
+  font-size: 1.08rem;
+}
+.trip-user-balance-list li:last-child {
+  border-bottom: none;
+}
+.trip-user-balance-name {
+  font-weight: 600;
+  color: #1746a2;
+}
+.trip-user-balance-amount {
+  font-weight: 700;
+}
+.trip-user-balance-list .owe .trip-user-balance-amount {
+  color: #e11d48;
+}
+.trip-user-balance-list .get .trip-user-balance-amount {
+  color: #059669;
+}
+.trip-user-balance-list .settled .trip-user-balance-amount {
+  color: #64748b;
+}
+.trip-user-loading, .trip-user-error, .trip-user-empty {
+  color: #aaa;
+  font-size: 1.1rem;
+  margin-top: 40px;
+  text-align: center;
+}
+@media (max-width: 900px) {
+  .trip-user-content-row {
+    flex-direction: column;
+    gap: 24px;
+    max-width: 98vw;
+    margin-top: 18px;
+  }
+  .trip-user-balances-box {
+    min-width: 0;
+    width: 98vw;
+    max-width: 98vw;
+    margin: 0 auto;
+    height: 320px;
+  }
+}

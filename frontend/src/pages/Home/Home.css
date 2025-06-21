@@ -1,0 +1,186 @@
+/* Layout for Home page with sidebar */
+.home-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #eaf1fb 60%, #c7e0fa 100%);
+}
+
+.home-main-content {
+  flex: 1;
+  margin-left: 250px; /* width of sidebar */
+  padding: 30px 40px 32px 40px;
+  min-height: 100vh;
+  background: transparent;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .home-layout {
+    flex-direction: column;
+  }
+  .home-main-content {
+    margin-left: 0;
+    padding: 12px 8px 16px 8px;
+  }
+}
+
+/* Quote box at the top of the Home page */
+.home-quote-box {
+  background: #f7faff;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(37,99,235,0.10);
+  padding: 18px 36px;
+  margin: 4px auto 8px auto;
+  margin-top: 0.1rem;
+  margin-bottom: 1.5rem;
+  width: 92%;
+  max-width: 1100px;
+  font-size: 1.45rem;
+  color: #2563eb;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.7px;
+  font-family: 'Segoe UI', 'Georgia', serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  position: relative;
+  font-style: italic;
+  border-left: 5px solid #2563eb;
+  border-right: 5px solid #60a5fa;
+ 
+}
+.home-quote-box::before {
+  content: '\201C';
+  font-size: 2.1rem;
+  color: #60a5fa;
+  margin-right: 12px;
+  font-family: serif;
+  font-style: normal;
+}
+.home-quote-box::after {
+  content: '\201D';
+  font-size: 2.1rem;
+  color: #60a5fa;
+  margin-left: 12px;
+  font-family: serif;
+  font-style: normal;
+}
+
+.home-cards-container {
+  display: flex;
+  gap: 2vw;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 6px 0 32px 0;
+  margin-top: 0;
+  margin-bottom: 32px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 320px;
+}
+
+.home-card {
+  background: linear-gradient(120deg, #f7faff 60%, #eaf1fb 100%);
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.13);
+  padding: 24px 0 24px 0;
+  min-width: 240px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s, background 0.15s;
+  border: 2px solid #eaf1fb;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  margin: 0 1vw;
+}
+.home-card:hover {
+  box-shadow: 0 8px 24px rgba(37,99,235,0.13);
+  transform: translateY(-2px) scale(1.025);
+  border-color: #2563eb;
+  background: linear-gradient(120deg, #f0f6ff 60%, #eaf1fb 100%);
+}
+
+.home-card-title {
+  color: #1746a2;
+  font-size: 1.22rem;
+  font-weight: 800;
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.4px;
+  font-family: 'Segoe UI', 'Georgia', serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 2px 8px rgba(37,99,235,0.07);
+  text-transform: capitalize;
+}
+
+.home-card-title::before {
+  content: '';
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-right: 9px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.home-card:nth-child(1) .home-card-title::before {
+  background-image: url('/trip.png');
+}
+.home-card:nth-child(2) .home-card-title::before {
+  background-image: url('/expense.png');
+}
+.home-card:nth-child(3) .home-card-title::before {
+  background-image: url('/friends.png');
+}
+
+.home-card-value {
+  color: #1d3557;
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+@media (max-width: 900px) {
+  .home-quote-box, .home-cards-container {
+    width: 98vw;
+    max-width: 98vw;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .home-quote-box {
+    font-size: 1rem;
+    padding: 8px 6px;
+    border-radius: 10px;
+    min-height: 30px;
+    margin-top: 4px;
+  }
+  .home-cards-container {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    width: 98vw;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .home-card {
+    min-width: 0;
+    width: 90vw;
+    max-width: 98vw;
+    padding: 16px 0;
+    height: 60px;
+    border-radius: 14px;
+    margin: 0 0 10px 0;
+  }
+}
