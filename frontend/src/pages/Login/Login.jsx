@@ -19,6 +19,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [taglineIdx, setTaglineIdx] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [sessionExpired, setSessionExpired] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
