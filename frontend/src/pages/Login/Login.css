@@ -270,7 +270,7 @@ html,body{
   margin-bottom: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .login-main-container {
     flex-direction: column;
     min-height: unset;
