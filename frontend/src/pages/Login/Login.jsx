@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Login.css';
 
 const TAGLINES = [
@@ -26,6 +26,15 @@ const Login = () => {
     }, 3500);
     return () => clearInterval(interval);
   }, []);
+
+ useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('session') === 'expired') {
+      setSessionExpired(true);
+    } else {
+      setSessionExpired(false);
+    }
+  }, [location.search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +71,9 @@ const Login = () => {
           />
         </div>
         <h2 className="login-title">Login</h2>
+         {sessionExpired && (
+          <div className="login-error" style={{marginBottom: '1rem', color: '#e53935'}}>Session expired. Please login again.</div>
+        )}
         <form className="login-form" onSubmit={handleSubmit}>
           <input type="text" placeholder="Username" className="login-input" value={username} onChange={e => setUsername(e.target.value)} />
           <input type="password" placeholder="Password" className="login-input" value={password} onChange={e => setPassword(e.target.value)} />
