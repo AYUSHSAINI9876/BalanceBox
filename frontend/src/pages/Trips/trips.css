@@ -178,8 +178,8 @@
   .trips-main-content {
     margin-left: 0;
     padding: 18px 1vw 18px 1vw;
-    width: 98vw;
-    max-width: 98vw;
+    width: 100vw !important;
+    max-width: 100vw !important;
     min-width: 0;
     box-sizing: border-box;
   }

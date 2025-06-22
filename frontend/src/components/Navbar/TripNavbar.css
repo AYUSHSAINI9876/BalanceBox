@@ -32,6 +32,10 @@
     margin-bottom: 18px;
     align-items: stretch;
     justify-content: flex-start;
+    width: 94%;
+    max-width: 94%;
+    margin-left: auto;
+    margin-right: auto;
   }
   .trip-nav-link {
     width: 100%;

@@ -70,12 +70,20 @@
   margin-top: 40px;
   text-align: center;
 }
+@media (max-width: 1200px) {
+  .outgoing-req-container {
+    padding: 12px 2vw 12px 2vw;
+    max-width: 94vw;
+    min-width: 0;
+    width: 94vw;
+  }
+}
 @media (max-width: 900px) {
   .outgoing-req-container {
     padding: 12px 2vw 12px 2vw;
-    max-width: 98vw;
+    max-width: 94vw;
     min-width: 0;
-    width: 98vw;
+    width: 94vw;
   }
   .outgoing-req-item {
     font-size: 1rem;
@@ -88,9 +96,9 @@
 @media (max-width: 480px) {
   .outgoing-req-container {
     padding: 8px 1vw 8px 1vw;
-    max-width: 99vw;
+    max-width: 94vw;
     min-width: 0;
-    width: 99vw;
+    width: 94vw;
   }
   .outgoing-req-item {
     font-size: 0.95rem;
@@ -105,9 +113,9 @@
 @media (max-width: 350px) {
   .outgoing-req-container {
     padding: 4px 0.5vw 4px 0.5vw;
-    max-width: 100vw;
+    max-width: 96vw;
     min-width: 0;
-    width: 100vw;
+    width: 96vw;
   }
   .outgoing-req-item {
     font-size: 0.85rem;

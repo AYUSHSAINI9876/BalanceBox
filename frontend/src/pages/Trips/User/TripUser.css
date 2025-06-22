@@ -105,13 +105,13 @@
   .trip-user-content-row {
     flex-direction: column;
     gap: 18px;
-    max-width: 96vw;
+    max-width: 94vw;
     margin-top: 12px;
   }
   .trip-user-balances-box {
     min-width: 0;
-    width: 96vw;
-    max-width: 96vw;
+    width: 94vw;
+    max-width: 94vw;
     margin: 0 auto;
     height: 280px;
     padding: 12px 1vw;
@@ -133,8 +133,8 @@
     margin-top: 8px;
   }
   .trip-user-balances-box {
-    width: 98vw;
-    max-width: 98vw;
+    width: 94vw;
+    max-width: 94vw;
     padding: 8px 2vw;
     height: 220px;
   }
@@ -150,8 +150,8 @@
     margin-top: 4px;
   }
   .trip-user-balances-box {
-    width: 99vw;
-    max-width: 99vw;
+    width: 94vw;
+    max-width: 94vw;
     padding: 4px 1vw;
     height: 140px;
   }

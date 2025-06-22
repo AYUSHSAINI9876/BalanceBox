@@ -106,8 +106,8 @@
   }
   .trip-overview-charts-row > :first-child,
   .trip-overview-charts-row > :last-child {
-    width: 96vw;
-    max-width: 96vw;
+    width: 90vw;
+    max-width: 90vw;
     min-width: 0;
     height: 200px;
   }
@@ -128,8 +128,8 @@
   }
   .trip-overview-charts-row > :first-child,
   .trip-overview-charts-row > :last-child {
-    width: 98vw;
-    max-width: 98vw;
+    width: 90vw;
+    max-width: 90vw;
     min-width: 0;
     height: 140px;
   }
@@ -150,8 +150,8 @@
   }
   .trip-overview-charts-row > :first-child,
   .trip-overview-charts-row > :last-child {
-    width: 99vw;
-    max-width: 99vw;
+    width: 90vw;
+    max-width: 90vw;
     min-width: 0;
     height: 80px;
   }
