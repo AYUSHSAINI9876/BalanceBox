@@ -1,19 +1,14 @@
-/* Prevent body scroll and set full height */
-body, html {
-  height: 100vh;
-  margin: 0;
+html,body{
+  margin:0;
   padding: 0;
-  overflow: hidden;
-  background: linear-gradient(120deg, #eaf1fb 60%, #c7e0fa 100%);
-  font-family: 'Segoe UI', Arial, sans-serif;
 }
-
-/* Main container split layout */
+/* Only apply login page background and scroll for login page */
 .login-main-container {
   display: flex;
   min-height: 100vh;
   height: 100vh;
-  background: transparent;
+  background: linear-gradient(120deg, #eaf1fb 60%, #c7e0fa 100%);
+  font-family: 'Segoe UI', Arial, sans-serif;
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
@@ -21,6 +16,7 @@ body, html {
   align-items: center;
 }
 
+/* Main container split layout */
 .login-left {
   flex: 1;
   display: flex;
@@ -291,13 +287,7 @@ body, html {
     width: 100vw;
   }
   .login-right.login-info-box {
-    margin: 0;
-    border-radius: 0 0 18px 18px;
-    box-shadow: none;
-    width: 100vw;
-    min-height: 120px;
-    padding: 0 8vw;
-    background-size: 120px, cover;
+    display: none !important;
   }
   .login-info-title {
     font-size: 2.1rem;
@@ -329,4 +319,12 @@ body, html {
     bottom: 5%;
     right: 4%;
   }
+
+  .login-info-box::after {
+    width: 60px;
+    height: 60px;
+    bottom: 5%;
+    right: 4%;
+  }
+
 }

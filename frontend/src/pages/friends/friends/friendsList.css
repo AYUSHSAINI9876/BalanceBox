@@ -106,10 +106,69 @@
   .friends-list-container {
     padding: 12px 2vw 12px 2vw;
     max-width: 98vw;
+    min-width: 0;
+    width: 98vw;
   }
   .friends-add-row {
     flex-direction: column;
     gap: 10px;
     align-items: stretch;
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .friends-list-item {
+    font-size: 1rem;
+    padding: 10px 0;
+  }
+}
+@media (max-width: 480px) {
+  .friends-list-container {
+    padding: 8px 1vw 8px 1vw;
+    max-width: 99vw;
+    min-width: 0;
+    width: 99vw;
+  }
+  .friends-add-row {
+    gap: 6px;
+    width: 99vw;
+    max-width: 99vw;
+  }
+  .friends-id-input {
+    min-width: 0;
+    font-size: 0.98rem;
+    padding: 8px 8px;
+  }
+  .friends-add-btn {
+    font-size: 0.98rem;
+    padding: 0.6em 1.2em;
+  }
+  .friends-list-item {
+    font-size: 0.95rem;
+    padding: 8px 0;
+  }
+}
+@media (max-width: 350px) {
+  .friends-list-container {
+    padding: 4px 0.5vw 4px 0.5vw;
+    max-width: 100vw;
+    min-width: 0;
+    width: 100vw;
+  }
+  .friends-add-row {
+    gap: 3px;
+    width: 100vw;
+    max-width: 100vw;
+  }
+  .friends-id-input {
+    font-size: 0.85rem;
+    padding: 6px 4px;
+  }
+  .friends-add-btn {
+    font-size: 0.85rem;
+    padding: 0.4em 0.8em;
+  }
+  .friends-list-item {
+    font-size: 0.85rem;
+    padding: 4px 0;
   }
 }

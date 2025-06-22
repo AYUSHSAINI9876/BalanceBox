@@ -13,12 +13,13 @@ import EditExpense from "../pages/Trips/ExpenseLog/edit/editExpense";
 import FriendsList from "../pages/friends/friends/friendsList";
 import IncomingRequests from "../pages/friends/incoming/incoming_req";
 import OutgoingRequests from "../pages/friends/outgoing/outgoing_req";
+import Page404 from "../pages/page404";
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+  // if (!token) {
+  //   return <Navigate to="/login" replace />;
+  // }
   return children;
 }
 
@@ -45,8 +46,9 @@ function AppRouter() {
         <Route path="/friends" element={<ProtectedRoute><FriendsList /></ProtectedRoute>} />
         <Route path="/friends/requests-incoming" element={<ProtectedRoute><IncomingRequests /></ProtectedRoute>} />
         <Route path="/friends/requests-pending" element={<ProtectedRoute><OutgoingRequests /></ProtectedRoute>} />
-        {/* Catch-All */}
-        {/* <Route path="*" element={<h2>404 Not Found</h2>} /> */}
+        {/* 404 */}
+        <Route path="/404" element={<Page404 />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </Router>
   );

@@ -173,26 +173,149 @@
   text-align: center;
 }
 
+/* 1200px and below: hamburger, shrink paddings and widths */
+@media (max-width: 1200px) {
+  .trips-main-content {
+    margin-left: 0;
+    padding: 18px 1vw 18px 1vw;
+    width: 98vw;
+    max-width: 98vw;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .trips-header-row,
+  .trips-search-row {
+    max-width: 98vw;
+    width: 98vw;
+  }
+  .trips-list {
+    max-width: 98vw;
+    width: 98vw;
+  }
+  .trip-card {
+    max-width: 98vw;
+    width: 98vw;
+    padding: 18px 0;
+    border-radius: 14px;
+  }
+  /* Hamburger menu for sidebar */
+  .sidebar-container {
+    display: none !important;
+  }
+  .sidebar-hamburger {
+    display: flex !important;
+  }
+  .sidebar-overlay.active {
+    display: block;
+  }
+  .sidebar-container.mobile-active {
+    display: flex !important;
+  }
+  .sidebar-link,
+  .sidebar-signout-btn {
+    width: 94vw !important;
+    min-width: 0 !important;
+    max-width: 94vw !important;
+    font-size: 1.05rem !important;
+    padding: 0.8rem 0 !important;
+  }
+}
+
+/* 900px and below: stack, shrink further */
 @media (max-width: 900px) {
   .trips-main-content {
     margin-left: 0;
-    padding: 16px 8px 16px 8px;
+    padding: 12px 1vw 16px 1vw;
+    width: 96vw;
+    max-width: 96vw;
+    min-width: 0;
+    box-sizing: border-box;
   }
-  .trips-header-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
+  .trips-header-row,
   .trips-search-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    width: 96vw;
+    max-width: 96vw;
   }
   .trips-list {
-    gap: 12px;
+    width: 96vw;
+    max-width: 96vw;
+    gap: 10px;
   }
   .trip-card {
-    padding: 16px 10px;
+    width: 90vw;
+    max-width: 340px;
+    min-width: 0;
+    padding: 12px 0;
+    border-radius: 12px;
+  }
+  .sidebar-link,
+  .sidebar-signout-btn {
+    width: 96vw !important;
+    min-width: 0 !important;
+    max-width: 96vw !important;
+    font-size: 1.02rem !important;
+    padding: 0.7rem 0 !important;
+  }
+}
+
+/* 480px and below: tighter */
+@media (max-width: 480px) {
+  .trips-main-content {
+    padding: 6px 1vw 8px 1vw;
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .trips-header-row,
+  .trips-list {
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .trips-search-row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 8px;
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .trip-card {
+    width: 96vw;
+    max-width: 96vw;
+    padding: 8px 0;
+    font-size: 0.98rem;
     border-radius: 10px;
+  }
+  .sidebar-link,
+  .sidebar-signout-btn {
+    width: 98vw !important;
+    font-size: 0.98rem !important;
+    padding: 0.6rem 0 !important;
+  }
+}
+
+/* 350px and below: ultra small */
+@media (max-width: 350px) {
+  .trips-main-content {
+    padding: 2px 0 2px 0;
+    width: 99vw;
+    max-width: 99vw;
+  }
+  .trips-header-row,
+  .trips-search-row,
+  .trips-list {
+    width: 99vw;
+    max-width: 99vw;
+  }
+  .trip-card {
+    width: 94vw;
+    max-width: 94vw;
+    padding: 4px 0;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+  .sidebar-link,
+  .sidebar-signout-btn {
+    width: 99vw !important;
+    font-size: 0.85rem !important;
+    padding: 0.5rem 0 !important;
   }
 }

@@ -70,10 +70,11 @@
   margin-top: 40px;
   text-align: center;
 }
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .trip-user-content-row {
     flex-direction: column;
     gap: 24px;
+    align-items: stretch;
     max-width: 98vw;
     margin-top: 18px;
   }
@@ -83,5 +84,65 @@
     max-width: 98vw;
     margin: 0 auto;
     height: 320px;
+    padding: 18px 1vw;
+  }
+}
+@media (max-width: 900px) {
+  .trip-user-content-row {
+    flex-direction: column;
+    gap: 18px;
+    max-width: 96vw;
+    margin-top: 12px;
+  }
+  .trip-user-balances-box {
+    min-width: 0;
+    width: 96vw;
+    max-width: 96vw;
+    margin: 0 auto;
+    height: 280px;
+    padding: 12px 1vw;
+    min-height: 180px; /* Ensures enough space for friends/trip list */
+  }
+  .trip-user-section-title {
+    font-size: 1.08rem;
+    margin-bottom: 10px;
+  }
+  .trip-user-balance-list {
+    min-height: 120px;
+    font-size: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .trip-user-content-row {
+    gap: 10px;
+    max-width: 98vw;
+    margin-top: 8px;
+  }
+  .trip-user-balances-box {
+    width: 98vw;
+    max-width: 98vw;
+    padding: 8px 2vw;
+    height: 220px;
+  }
+  .trip-user-balance-list {
+    min-height: 80px;
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 350px) {
+  .trip-user-content-row {
+    gap: 6px;
+    max-width: 99vw;
+    margin-top: 4px;
+  }
+  .trip-user-balances-box {
+    width: 99vw;
+    max-width: 99vw;
+    padding: 4px 1vw;
+    height: 140px;
+  }
+  .trip-user-balance-list {
+    min-height: 40px;
+    font-size: 0.85rem;
   }
 }
