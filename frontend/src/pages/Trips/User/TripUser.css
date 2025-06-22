@@ -4,7 +4,9 @@
   gap: 40px;
   justify-content: center;
   align-items: stretch;
-  margin-top: 32px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
   flex-wrap: wrap;
 }
 .trip-user-balances-box {
@@ -44,6 +46,7 @@
   padding: 10px 0;
   border-bottom: 1px solid #e3e8f0;
   font-size: 1.08rem;
+  word-break: break-word;
 }
 .trip-user-balance-list li:last-child {
   border-bottom: none;
@@ -73,18 +76,29 @@
 @media (max-width: 1200px) {
   .trip-user-content-row {
     flex-direction: column;
-    gap: 24px;
+    gap: 18px;
     align-items: stretch;
-    max-width: 98vw;
-    margin-top: 18px;
+    max-width: 96vw;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
   }
   .trip-user-balances-box {
     min-width: 0;
-    width: 98vw;
-    max-width: 98vw;
+    width: 96vw;
+    max-width: 96vw;
     margin: 0 auto;
-    height: 320px;
-    padding: 18px 1vw;
+    height: 280px;
+    padding: 12px 1vw;
+    min-height: 180px; /* Ensures enough space for friends/trip list */
+  }
+  .trip-user-section-title {
+    font-size: 1.08rem;
+    margin-bottom: 10px;
+  }
+  .trip-user-balance-list {
+    min-height: 120px;
+    font-size: 1rem;
   }
 }
 @media (max-width: 900px) {
