@@ -1,0 +1,280 @@
+/* Expense Log Layout */
+.expense-log-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.expense-log-title {
+  color: #1746a2;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', 'Georgia', serif;
+  margin: 0;
+}
+.expense-log-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.expense-log-filter {
+  padding: 0.6em 1.2em;
+  border-radius: 10px;
+  border: 1.5px solid #2563eb;
+  font-size: 1.08rem;
+  background: #f7faff;
+  color: #1746a2;
+  outline: none;
+  transition: border 0.18s;
+}
+.expense-log-add-btn {
+  background: linear-gradient(90deg, #2563eb 60%, #60a5fa 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.08rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7em 1.7em;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.13s;
+}
+.expense-log-add-btn:hover {
+  background: linear-gradient(90deg, #1d4ed8 60%, #2563eb 100%);
+  box-shadow: 0 4px 18px rgba(37,99,235,0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+.expense-log-add-icon {
+  font-size: 1.3em;
+  font-weight: 900;
+}
+.expense-log-list-scroll {
+  max-height: 480px;
+  overflow-y: auto;
+  margin-bottom: 18px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.expense-log-list-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.expense-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.expense-log-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.07);
+  padding: 22px 28px 18px 28px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  position: relative;
+}
+.expense-log-main {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.expense-log-desc {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 2px;
+}
+.expense-log-amt {
+  font-size: 1.13rem;
+  font-weight: 800;
+  color: #059669;
+}
+.expense-log-cat {
+  font-size: 1.01rem;
+  color: #1746a2;
+  font-weight: 600;
+}
+.expense-log-paidby, .expense-log-split {
+  font-size: 0.98rem;
+  color: #64748b;
+}
+.expense-log-actions-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+.expense-log-edit-btn, .expense-log-delete-btn {
+  background: #f7faff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  transition: background 0.15s, box-shadow 0.15s;
+  box-shadow: 0 1px 4px rgba(37,99,235,0.07);
+}
+.expense-log-edit-btn:hover {
+  background: #e0e7ff;
+}
+.expense-log-delete-btn:hover {
+  background: #fee2e2;
+}
+.expense-log-loading, .expense-log-error, .expense-log-empty {
+  color: #aaa;
+  font-size: 1.1rem;
+  margin-top: 40px;
+  text-align: center;
+}
+/* Modal styles */
+.expense-log-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.expense-log-modal {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(37,99,235,0.18);
+  padding: 32px 38px 24px 38px;
+  min-width: 320px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.expense-log-modal-title {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #e11d48;
+  margin-bottom: 22px;
+  text-align: center;
+}
+.expense-log-modal-actions {
+  display: flex;
+  gap: 18px;
+}
+.expense-log-modal-btn {
+  padding: 0.7em 2.1em;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.08rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.expense-log-modal-btn.delete {
+  background: #e11d48;
+  color: #fff;
+}
+.expense-log-modal-btn.cancel {
+  background: #f7faff;
+  color: #2563eb;
+}
+.expense-log-modal-btn.delete:hover {
+  background: #be123c;
+}
+.expense-log-modal-btn.cancel:hover {
+  background: #e0e7ff;
+}
+@media (max-width: 1200px) {
+  .expense-log-header-row,
+  .expense-log-list-scroll {
+    max-width: 98vw;
+    width: 98vw;
+  }
+  .expense-log-card {
+    max-width: 98vw;
+    width: 98vw;
+    padding: 18px 0 14px 0;
+    border-radius: 14px;
+  }
+}
+@media (max-width: 900px) {
+  .expense-log-header-row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 8px;
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .expense-log-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 8px;
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .expense-log-list-scroll {
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .expense-log-card {
+    width: 96vw;
+    max-width: 96vw;
+    padding: 8px 0 8px 0;
+    font-size: 0.98rem;
+    border-radius: 10px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .expense-log-actions-row {
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+  }
+}
+@media (max-width: 480px) {
+  .expense-log-header-row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 8px;
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .expense-log-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 8px;
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .expense-log-list-scroll {
+    width: 98vw;
+    max-width: 98vw;
+  }
+  .expense-log-card {
+    width: 96vw;
+    max-width: 96vw;
+    padding: 8px 0 8px 0;
+    font-size: 0.98rem;
+    border-radius: 10px;
+  }
+}
+@media (max-width: 350px) {
+  .expense-log-header-row,
+  .expense-log-actions,
+  .expense-log-list-scroll {
+    width: 99vw;
+    max-width: 99vw;
+  }
+  .expense-log-card {
+    width: 94vw;
+    max-width: 94vw;
+    padding: 4px 0 4px 0;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+}
