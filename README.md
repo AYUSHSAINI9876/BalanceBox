@@ -14,8 +14,8 @@ Create trips using usernames of registered users
 ![Screenshot 2025-06-23 004738](https://github.com/user-attachments/assets/0f0c0ece-368c-4a85-875a-9f8728d2797b)
 
 ## 💸 **Expenses Tracking**
-Add, edit & delete expe![Screenshot 2025-06-23 005013](https://github.com/user-attachments/assets/3f8dda06-9230-4a65-a9b5-5379d82631c8)
-nses for each trip with category and split amounts automatically calculated
+Add, edit & delete expenses for each trip with category and split amounts automatically calculated
+![Screenshot 2025-06-23 005013](https://github.com/user-attachments/assets/3f8dda06-9230-4a65-a9b5-5379d82631c8)
 
 ## 📊 **Charts & Insights**
 - User Pie Chart by Category — Total expenses by category for the logged-in user
