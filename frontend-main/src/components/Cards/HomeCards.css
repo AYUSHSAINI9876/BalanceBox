@@ -1,0 +1,51 @@
+/* Modern blue-themed CSS for HomeCards: card layout, hover effect, and responsive design */
+.home-cards-container {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  margin: 32px 0 36px 0;
+}
+
+.home-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.10);
+  padding: 32px 38px;
+  min-width: 180px;
+  text-align: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 2px solid #eaf1fb;
+}
+.home-card:hover {
+  box-shadow: 0 8px 32px rgba(37,99,235,0.16);
+  transform: translateY(-4px) scale(1.03);
+  border-color: #60a5fa;
+}
+
+.home-card-title {
+  color: #2563eb;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  letter-spacing: 0.5px;
+}
+
+.home-card-value {
+  color: #1d3557;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 900px) {
+  .home-cards-container {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .home-card {
+    min-width: 0;
+    width: 90vw;
+    padding: 24px 0;
+  }
+}
