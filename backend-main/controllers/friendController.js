@@ -5,12 +5,20 @@ const FriendRequest = require('../models/FriendRequest');
 
 exports.sendRequest = async (req, res) => {
   const { username } = req.body; // receiver's username
-  
+
   try {
+    if (typeof username !== 'string' || !username.trim()) {
+      return res.status(400).json({ message: 'Username is required' });
+    }
+
     // 1️⃣ Find receiver by username
-    const receiver = await User.findOne({ username });
+    const receiver = await User.findOne({ username: username.trim() });
     if (!receiver) {
       return res.status(404).json({ message: 'User not found!' });
+    }
+
+    if (receiver._id.toString() === req.user.id) {
+      return res.status(400).json({ message: "You can't add yourself as a friend!" });
     }
 
     // 2️⃣ Check if already friends (status: accepted)

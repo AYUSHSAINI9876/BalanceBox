@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import TripNavbar from '../../../components/Navbar/TripNavbar';
-import fetchWithAuth from '../../../utils/fetchWihAuth';
+import fetchWithAuth, { API_BASE } from '../../../utils/fetchWihAuth';
 import './SplitMatrix.css';
 
-const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const SplitMatrix = () => {
   const { tripId } = useParams();

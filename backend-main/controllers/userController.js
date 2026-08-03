@@ -13,31 +13,33 @@ exports.getFriendsBalances = async (req, res) => {
     const acceptedRequests = await FriendRequest.find({
       $or: [{ sender: userId }, { receiver: userId }],
       status: 'accepted',
-    });
+    }).select('sender receiver').lean();
 
     // Get all friendIds
     const friendIds = acceptedRequests.map(fr => {
-      return fr.sender.equals(userId) ? fr.receiver.toString() : fr.sender.toString();
+      return fr.sender.toString() === userId ? fr.receiver.toString() : fr.sender.toString();
     });
 
     // Fetch all trips that involve this user
-    const trips = await Trip.find({ members: userId });
+    const trips = await Trip.find({ members: userId }).select('members balanceMatrix').lean();
 
     const balanceMap = {}; // { friendId: totalBalance }
     trips.forEach(trip => {
-      const myIndex = trip.members.findIndex(m => m.equals(userId));
-      if (myIndex === -1 || !trip.balanceMatrix) return;
+      const myIndex = trip.members.findIndex(m => m.toString() === userId);
+      // A trip with no expenses yet can have an empty/stale matrix.
+      const myRow = trip.balanceMatrix?.[myIndex];
+      if (myIndex === -1 || !myRow) return;
 
       trip.members.forEach((memberId, memberIdx) => {
         const memberIdStr = memberId.toString();
         if (memberIdx !== myIndex && friendIds.includes(memberIdStr)) {
-          balanceMap[memberIdStr] = (balanceMap[memberIdStr] || 0) + trip.balanceMatrix[myIndex][memberIdx];
+          balanceMap[memberIdStr] = (balanceMap[memberIdStr] || 0) + (myRow[memberIdx] || 0);
         }
       });
     });
 
     // Fetch friend names
-    const friends = await User.find({ _id: { $in: friendIds } }, 'name username');
+    const friends = await User.find({ _id: { $in: friendIds } }, 'name username').lean();
     const result = friends.map(friend => ({
       id: friend._id,
       name: friend.name,
@@ -63,7 +65,10 @@ exports.register = async (req, res) => {
     const newUser = new User({ username, password: hashed, name });
 
     await newUser.save();
-    res.status(201).json({ message: 'User created successfully', user: newUser });
+    res.status(201).json({
+      message: 'User created successfully',
+      user: { id: newUser._id, username: newUser.username, name: newUser.name },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -85,106 +90,49 @@ exports.login = async (req, res) => {
   }
 };
 
-// Total Trips Count
-exports.getTotalTrips = async (req, res) => {
+// Everything the Home dashboard needs, derived from a single pass over the user's trips.
+exports.getDashboardSummary = async (req, res) => {
   try {
-    const trips = await Trip.find({ members: req.user.id });
-    res.status(200).json({ totalTrips: trips.length });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+    const userId = req.user.id;
 
-//  Total Friends Count
-exports.getTotalFriends = async (req, res) => {
-  try {
-    const friends = await FriendRequest.find({
-      $or: [
-        { sender: req.user.id, status: 'accepted' },
-        { receiver: req.user.id, status: 'accepted' }
-      ]
-    });
-    res.status(200).json({ totalFriends: friends.length });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-
-// Get total expense (only user’s share)
-exports.getTotalExpense = async (req, res) => {
-  try {
-    const trips = await Trip.find({ members: req.user.id });
-
-    let totalExpense = 0;
-    for (let trip of trips) {
-      for (let expense of trip.expenses) {
-        if (expense.splitBetween.map(u => u.toString()).includes(req.user.id)) {
-          totalExpense += expense.amount / expense.splitBetween.length;
-        }
-      }
-    }
-
-    res.status(200).json({ totalExpense });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-
-
-// Get category-wise summary (only user’s share)
-exports.getCategorySummary = async (req, res) => {
-  try {
-    const trips = await Trip.find({ members: req.user.id });
+    const [trips, totalFriends] = await Promise.all([
+      Trip.find({ members: userId })
+        .select('title expenses createdAt')
+        .sort({ createdAt: -1 })
+        .lean(),
+      FriendRequest.countDocuments({
+        status: 'accepted',
+        $or: [{ sender: userId }, { receiver: userId }],
+      }),
+    ]);
 
     const categorySummary = {};
+    let totalExpense = 0;
 
-    for (let trip of trips) {
-      for (let expense of trip.expenses) {
-        if (expense.splitBetween.map(u => u.toString()).includes(req.user.id)) {
-          const userShare = expense.amount / expense.splitBetween.length;
-          categorySummary[expense.category] = 
-            (categorySummary[expense.category] || 0) + userShare;
-        }
+    const perTripUserTotals = trips.map(trip => {
+      let tripUserTotal = 0;
+      for (const expense of trip.expenses) {
+        const isSplitWithUser = expense.splitBetween.some(u => u.toString() === userId);
+        if (!isSplitWithUser) continue;
+        const share = expense.amount / expense.splitBetween.length;
+        tripUserTotal += share;
+        categorySummary[expense.category] = (categorySummary[expense.category] || 0) + share;
       }
-    }
-
-    res.status(200).json({ categorySummary }); // { food: 2000, travel: 5000, ... }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-
-
-// Get last 5 trips expense summary (user's share)
-exports.getRecentTripsSummary = async (req, res) => {
-  try {
-    const trips = await Trip.find({ members: req.user.id })
-      .sort({ createdAt: -1 })
-      .limit(5);
-
-    if (trips.length === 0) {
-      return res.status(200).json({ message: "No more trips" });
-    }
-
-    const summary = trips.map(trip => {
-      let total = 0;
-      trip.expenses.forEach(expense => {
-        if (expense.splitBetween.map(u => u.toString()).includes(req.user.id)) {
-          total += expense.amount / expense.splitBetween.length;
-        }
-      });
+      totalExpense += tripUserTotal;
       return {
-        tripTitle: trip.title,
         tripId: trip._id,
-        totalUserExpense: total
+        tripTitle: trip.title,
+        totalUserExpense: tripUserTotal,
       };
     });
 
-    res.status(200).json({ summary }); 
-    // agar <5 trips hain to jitni hain utni bhej dega
+    res.status(200).json({
+      totalTrips: trips.length,
+      totalFriends,
+      totalExpense,
+      categorySummary,
+      recentTrips: perTripUserTotals.slice(0, 5),
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

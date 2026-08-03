@@ -1,0 +1,50 @@
+:root {
+  --primary-color: #2563eb;
+  --primary-light: #60a5fa;
+  --secondary-color: #1746a2;
+  --background-light: #f7faff;
+  --text-dark: #1d3557;
+  --text-muted: #64748b;
+  --font-body: 'Inter', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--background-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--secondary-color);
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--secondary-color);
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+/* Add some smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}

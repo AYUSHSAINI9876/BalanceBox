@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import Friendnavbar from '../../../components/Navbar/Friendnavbar';
-import fetchWithAuth from '../../../utils/fetchWihAuth';
+import fetchWithAuth, { API_BASE } from '../../../utils/fetchWihAuth';
 import './incoming_req.css';
 
-const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const IncomingRequests = () => {
   const [requests, setRequests] = useState([]);

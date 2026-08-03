@@ -10,4 +10,8 @@ const friendRequestSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+friendRequestSchema.index({ sender: 1, receiver: 1 });
+friendRequestSchema.index({ receiver: 1, status: 1 });
+friendRequestSchema.index({ sender: 1, status: 1 });
+
 module.exports = mongoose.model('FriendRequest', friendRequestSchema);

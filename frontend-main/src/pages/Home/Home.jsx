@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import HomeCards from '../../components/Cards/HomeCards';
 import HomePieChart from '../../components/Charts/HomePieChart';
 import HomeBarChart from '../../components/Charts/HomeBarChart';
+import fetchWithAuth, { API_BASE } from '../../utils/fetchWihAuth';
 import './Home.css';
 
 const QUOTES = [
@@ -22,16 +23,53 @@ const QUOTES = [
 
 const Home = () => {
   const randomQuote = useMemo(() => QUOTES[Math.floor(Math.random() * QUOTES.length)], []);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  // One request feeds the cards and both charts.
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchDashboard() {
+      setLoading(true);
+      setError('');
+      try {
+        const res = await fetchWithAuth(`${API_BASE}/api/users/dashboard`);
+        if (!res.ok) throw new Error('Could not load your dashboard');
+        const json = await res.json();
+        if (!cancelled) setData(json);
+      } catch (err) {
+        if (!cancelled) setError(err.message);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    fetchDashboard();
+    return () => { cancelled = true; };
+  }, []);
+
+  const categoryData = useMemo(() => {
+    if (!data?.categorySummary) return [];
+    return Object.entries(data.categorySummary).map(([name, value]) => ({ name, value }));
+  }, [data]);
 
   return (
     <div className="home-layout">
       <Sidebar />
       <main className="home-main-content">
         <div className="home-quote-box">{randomQuote}</div>
-        <HomeCards />
+        {error && <div className="home-error" role="alert">{error}</div>}
+        <HomeCards
+          loading={loading}
+          totalTrips={data?.totalTrips}
+          totalExpense={data?.totalExpense}
+          totalFriends={data?.totalFriends}
+        />
         <div className="home-charts-row">
-          <HomePieChart />
-          <HomeBarChart />
+          <HomePieChart data={categoryData} loading={loading} />
+          <HomeBarChart data={data?.recentTrips || []} loading={loading} />
         </div>
       </main>
     </div>

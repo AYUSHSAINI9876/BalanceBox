@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CreateTripForm.css';
-import fetchWithAuth from '../../utils/fetchWihAuth';
+import fetchWithAuth, { API_BASE } from '../../utils/fetchWihAuth';
 
-const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const CreateTripForm = () => {
   const [title, setTitle] = useState('');

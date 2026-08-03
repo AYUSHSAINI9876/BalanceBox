@@ -34,7 +34,8 @@
   margin-bottom: 8px;
   text-align: center;
 }
-.add-expense-form label {
+.add-expense-form label,
+.add-expense-group-label {
   font-weight: 600;
   color: #2563eb;
   margin-bottom: 2px;
@@ -162,6 +163,7 @@
   border-radius: 6px;
   padding: 4px 10px;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
 }
 .add-expense-split-checkboxes input[type="checkbox"] {

@@ -1,1 +1,13 @@
 /node_modules
+dist
+dist-ssr
+*.local
+
+# Local env files (never commit real values; .env.example is the template)
+.env
+.env.local
+.env.*.local
+
+# Editor / OS
+.DS_Store
+*.log

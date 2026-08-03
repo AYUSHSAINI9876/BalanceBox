@@ -4,10 +4,9 @@ import Sidebar from '../../../components/Sidebar/Sidebar';
 import TripNavbar from '../../../components/Navbar/TripNavbar';
 import TripOverviewPieChart from '../../../components/Charts/TripOverviewPieChart';
 import TripOverviewBarChart from '../../../components/Charts/TripOverviewBarChart';
-import fetchWithAuth from '../../../utils/fetchWihAuth';
+import fetchWithAuth, { API_BASE } from '../../../utils/fetchWihAuth';
 import './tripOverview.css';
 
-const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const TripOverview = () => {
   const { tripId } = useParams();
@@ -19,33 +18,43 @@ const TripOverview = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    let cancelled = false;
+
     async function fetchAll() {
       setLoading(true);
       setError('');
       try {
-        // Trip details
-        const tripRes = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}`);
+        // All four are independent — request them concurrently, not as a waterfall.
+        const [tripRes, totalRes, catRes, memRes] = await Promise.all([
+          fetchWithAuth(`${API_BASE}/api/trips/${tripId}`),
+          fetchWithAuth(`${API_BASE}/api/trips/${tripId}/totalExpense`),
+          fetchWithAuth(`${API_BASE}/api/trips/${tripId}/category-expenses`),
+          fetchWithAuth(`${API_BASE}/api/trips/${tripId}/membersExpenseSummary`),
+        ]);
+
         if (!tripRes.ok) throw new Error('Trip not found');
-        const tripJson = await tripRes.json();
+
+        const [tripJson, totalJson, catJson, memJson] = await Promise.all([
+          tripRes.json(),
+          totalRes.ok ? totalRes.json() : Promise.resolve({}),
+          catRes.ok ? catRes.json() : Promise.resolve({}),
+          memRes.ok ? memRes.json() : Promise.resolve({}),
+        ]);
+
+        if (cancelled) return;
         setTrip(tripJson);
-        // Total expense
-        const totalRes = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/totalExpense`);
-        const totalJson = await totalRes.json();
         setTotalExpense(totalJson.totalExpense || 0);
-        // Category pie chart
-        const catRes = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/category-expenses`);
-        const catJson = await catRes.json();
         setCategoryData(catJson.categories || []);
-        // Member bar chart
-        const memRes = await fetchWithAuth(`${API_BASE}/api/trips/${tripId}/membersExpenseSummary`);
-        const memJson = await memRes.json();
         setMemberData(memJson.summary || []);
       } catch (err) {
-        setError(err.message);
+        if (!cancelled) setError(err.message);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      setLoading(false);
     }
+
     fetchAll();
+    return () => { cancelled = true; };
   }, [tripId]);
 
   return (

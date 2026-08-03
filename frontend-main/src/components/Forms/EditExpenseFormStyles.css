@@ -25,7 +25,8 @@
   margin-bottom: 8px;
   text-align: center;
 }
-.edit-expense-form-main label {
+.edit-expense-form-main label,
+.edit-expense-group-label {
   font-weight: 600;
   color: #2563eb;
   margin-bottom: 2px;
@@ -99,6 +100,7 @@
   border-radius: 6px;
   padding: 4px 10px;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
 }
 .edit-expense-split-checkboxes input[type="checkbox"] {

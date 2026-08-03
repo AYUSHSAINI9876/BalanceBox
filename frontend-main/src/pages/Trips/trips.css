@@ -1,19 +1,5 @@
-/* Layout for Trips page with sidebar */
-.trips-layout {
-  display: flex;
-  min-height: 100vh;
-  background: linear-gradient(120deg, #eaf1fb 60%, #c7e0fa 100%);
-}
-
-.trips-main-content {
-  flex: 1;
-  margin-left: 250px;
-  padding: 32px 40px 32px 40px;
-  min-height: 100vh;
-  background: transparent;
-  overflow-x: auto;
-  box-sizing: border-box;
-}
+/* Layout classes (.trips-layout, .trips-main-content) live in src/styles/appShell.css
+   because every signed-in page uses them. */
 
 .trips-header-row {
   display: flex;
@@ -130,10 +116,17 @@
   min-width: 0;
   max-width: 100%;
 }
+.trip-card {
+  cursor: pointer;
+}
 .trip-card:hover {
   box-shadow: 0 8px 32px rgba(37,99,235,0.16);
   border-color: #60a5fa;
   transform: translateY(-2px) scale(1.01);
+}
+.trip-card:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
 }
 .trip-title-row {
   font-size: 1.35rem;
@@ -151,11 +144,6 @@
   align-items: center;
   margin-bottom: 18px;
 }
-.trip-label {
-  color: #2563eb;
-  font-weight: 600;
-  margin-right: 4px;
-}
 .trip-created-by {
   position: absolute;
   right: 22px;
@@ -165,12 +153,6 @@
   font-weight: 600;
   font-family: 'Segoe UI', Arial, sans-serif;
   opacity: 0.85;
-}
-.trips-loading, .trips-empty {
-  color: #aaa;
-  font-size: 1.1rem;
-  margin-top: 40px;
-  text-align: center;
 }
 
 /* 1200px and below: hamburger, shrink paddings and widths */

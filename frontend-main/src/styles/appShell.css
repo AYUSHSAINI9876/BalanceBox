@@ -1,0 +1,83 @@
+/* App shell: the sidebar + main-content layout shared by every signed-in page.
+   Imported globally from main.jsx because routes are code-split — a page must
+   not depend on another route's stylesheet having been loaded first. */
+
+.trips-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #eaf1fb 60%, #c7e0fa 100%);
+}
+
+.trips-main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 32px 40px 32px 40px;
+  min-height: 100vh;
+  background: transparent;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+/* Shared status text (loading / empty / error) used across pages */
+.trips-loading,
+.trips-empty {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.trip-label {
+  color: #2563eb;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.trip-members {
+  color: #1d3557;
+}
+
+@media (max-width: 1200px) {
+  .trips-main-content {
+    margin-left: 0;
+    padding: 18px 1vw 18px 1vw;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 900px) {
+  .trips-layout {
+    width: 100vw !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    gap: 0 !important;
+  }
+  .trips-main-content {
+    margin-left: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  .trips-main-content {
+    padding: 6px 1vw 8px 1vw;
+    width: 98vw;
+    max-width: 98vw;
+  }
+}
+
+@media (max-width: 350px) {
+  .trips-main-content {
+    padding: 2px 0 2px 0;
+    width: 99vw;
+    max-width: 99vw;
+  }
+}

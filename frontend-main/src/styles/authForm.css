@@ -1,0 +1,183 @@
+/* Shared auth form controls used by both the Login and Register pages.
+   Kept in one place so either page renders correctly when loaded on its own
+   (routes are code-split, so a page only gets the CSS it imports). */
+
+.login-logo-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  position: relative;
+  margin-bottom: 1.4rem;
+}
+
+.login-logo {
+  height: 66px;
+  width: 66px;
+  display: block;
+  object-fit: contain;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.login-logo-wordmark {
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: #1746a2;
+  line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .login-logo {
+    height: 52px;
+    width: 52px;
+  }
+  .login-logo-wordmark {
+    font-size: 1.6rem;
+  }
+}
+
+.login-title {
+  font-family: 'Segoe UI', cursive, sans-serif;
+  color: #2563eb;
+  font-size: 2.5rem;
+  margin-bottom: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
+}
+
+.login-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #1746a2;
+  margin-top: 0.55rem;
+  letter-spacing: 0.2px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 1.1rem 1.1rem;
+  border-radius: 14px;
+  border: 1.5px solid #2563eb;
+  font-size: 1.08rem;
+  font-family: inherit;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  background: #f7faff;
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.04);
+}
+
+.login-input:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.10);
+}
+
+.login-input:disabled {
+  background: #eef2f7;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Password field + inline show/hide toggle */
+.login-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-password-wrap .login-input {
+  padding-right: 4.2rem;
+}
+
+.login-password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  transition: background 0.18s, color 0.18s;
+}
+
+.login-password-toggle:hover {
+  background: #e3edfa;
+  color: #1746a2;
+}
+
+.login-hint {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-top: 0.1rem;
+}
+
+.login-error {
+  background: #fdecea;
+  color: #c0392b;
+  border: 1px solid #f5c6c2;
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.login-btn {
+  padding: 1.1rem 1.1rem;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(90deg, #2563eb 60%, #60a5fa 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.15rem;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 1rem;
+  margin-bottom: 0.2rem;
+  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.10);
+  transition: background 0.2s, transform 0.15s;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #1d4ed8 60%, #2563eb 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.login-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-input:focus-visible,
+.login-btn:focus-visible,
+.login-password-toggle:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-btn,
+  .login-input,
+  .login-password-toggle {
+    transition: none;
+  }
+  .login-btn:hover:not(:disabled) {
+    transform: none;
+  }
+}

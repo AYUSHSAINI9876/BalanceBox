@@ -3,10 +3,9 @@ import { useParams } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import TripNavbar from '../../../components/Navbar/TripNavbar';
 import TripUserPieChart from '../../../components/Charts/TripUserPieChart';
-import fetchWithAuth from '../../../utils/fetchWihAuth';
+import fetchWithAuth, { API_BASE } from '../../../utils/fetchWihAuth';
 import './TripUser.css';
 
-const API_BASE = 'https://splitmate-zqda.onrender.com';
 
 const TripUser = () => {
   const { tripId } = useParams();
