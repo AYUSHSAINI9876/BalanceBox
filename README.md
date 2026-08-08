@@ -88,10 +88,15 @@ separately, and see a running balance with each friend across every shared trip.
 - **Per-trip breakdown** — member-wise spend, category split, and your own share
 - **Balance matrix** — a who-owes-whom grid for settling up in one pass
 
-### 🔐 Accounts
+### 🔐 Accounts with email OTP verification
 
-JWT authentication with bcrypt-hashed passwords. Protected routes redirect to
-login when a token is missing or expired — and send you back to where you were
+Sign-up is a three-step flow: enter your email, receive a 6-digit code by email
+(delivered through SendGrid), then set your name, username and password. Codes
+are single-use, expire in 10 minutes, and are stored only as a peppered HMAC —
+never in plain text.
+
+Login is email + password. JWTs are signed for 7 days; protected routes redirect
+to login when a token is missing or expired, and send you back to where you were
 headed once you sign in.
 
 ---
@@ -174,10 +179,24 @@ All protected routes require `Authorization: Bearer <token>`.
 
 | Method | Endpoint | Auth | Description |
 | :-- | :-- | :--: | :-- |
-| `POST` | `/api/users/register` | — | Create an account |
-| `POST` | `/api/users/login` | — | Returns a JWT valid for 7 days |
+| `POST` | `/api/users/send-otp` | — | Mails a 6-digit signup code to an email |
+| `POST` | `/api/users/verify-otp` | — | Validates the code, returns a short-lived `signupToken` |
+| `POST` | `/api/users/register` | — | Creates the account (requires a valid `signupToken`) |
+| `POST` | `/api/users/login` | — | Email + password; returns a JWT valid for 7 days |
 | `GET`  | `/api/users/dashboard` | ✅ | Totals, category summary and recent trips in one call |
 | `GET`  | `/api/users/me/friends-balances` | ✅ | Net balance with each friend |
+
+**Signup sequence**
+
+```
+POST /send-otp    { email }                      ->  code emailed
+POST /verify-otp  { email, otp }                 ->  { signupToken }
+POST /register    { signupToken, name,
+                    username, password }         ->  { token, user }
+```
+
+An account cannot be created without a `signupToken`, and that token is only
+ever issued by `verify-otp` — so proof of email ownership is mandatory.
 
 </details>
 
@@ -233,6 +252,10 @@ Every trip route verifies that the caller is a member of that trip.
 | Area | Implementation |
 | :-- | :-- |
 | Passwords | bcrypt hashed; never returned by any endpoint |
+| Email ownership | Accounts require a `signupToken`, issued only after a successful OTP challenge |
+| OTP storage | Only an HMAC-SHA256 of the code is stored, peppered with `JWT_SECRET` |
+| OTP lifetime | 10-minute TTL enforced by a MongoDB TTL index; consumed on first successful use |
+| OTP brute force | Max 5 wrong attempts per code, 60-second resend cooldown, per-IP **and** per-email rate limits |
 | Sessions | JWT, 7-day expiry, verified on every protected request |
 | Authorization | Every trip/expense route checks trip membership before responding |
 | Headers | `helmet` sets hardened HTTP security headers |
@@ -307,6 +330,18 @@ Confirm the API is up at <http://localhost:5000/health>.
 | `PORT` | — | Defaults to `5000`. Render sets this automatically. |
 | `NODE_ENV` | — | `production` hides raw error text from API responses. |
 | `ALLOWED_ORIGINS` | — | Comma-separated CORS allow-list. **Must include the Vercel URL in production.** |
+| `SENDGRID_API_KEY` | ✅ in production | SendGrid key with **Mail Send** permission. |
+| `SENDGRID_FROM_EMAIL` | ✅ in production | A **verified** sender address. |
+| `SENDGRID_FROM_NAME` | — | Inbox display name. Defaults to `BalanceBox`. |
+| `APP_NAME` | — | Product name used in the email subject and body. |
+| `OTP_TTL_MINUTES` | — | Code lifetime in minutes. Defaults to `10`. |
+| `OTP_RESEND_COOLDOWN_SECONDS` | — | Minimum gap between resends. Defaults to `60`. |
+
+> 💡 **Local development without SendGrid:** if `SENDGRID_API_KEY` is unset and
+> `NODE_ENV` is not `production`, the OTP is printed to the server console
+> instead of being emailed, so you can exercise the whole flow without a
+> SendGrid account. In production the server throws instead of silently
+> degrading.
 
 ### `frontend-main/.env.local`
 
@@ -338,7 +373,26 @@ If the password contains `@ : / ? # [ ] %`, URL-encode it (`@` → `%40`).
 </details>
 
 <details>
-<summary><b>2 · Backend on Render</b></summary>
+<summary><b>2 · SendGrid (email delivery for OTP)</b></summary>
+
+1. Create a free account at <https://signup.sendgrid.com> — the free tier
+   includes 100 emails/day, which is plenty for signup codes.
+2. **Settings → Sender Authentication → Single Sender Verification** → add the
+   address codes should come from, then click the confirmation link SendGrid
+   emails you. *Sending from an unverified address always fails.*
+3. **Settings → API Keys → Create API Key** → choose **Restricted Access** and
+   grant only **Mail Send → Full Access**. Copy the key immediately; it is shown
+   once and never again.
+4. Set `SENDGRID_API_KEY` and `SENDGRID_FROM_EMAIL` in Render.
+
+For a custom domain, use **Domain Authentication** instead of Single Sender and
+add the CNAME records SendGrid provides. This markedly improves deliverability
+and keeps codes out of spam folders.
+
+</details>
+
+<details>
+<summary><b>3 · Backend on Render</b></summary>
 
 | Setting | Value |
 | :-- | :-- |
@@ -346,14 +400,15 @@ If the password contains `@ : / ? # [ ] %`, URL-encode it (`@` → `%40`).
 | Build Command | `npm install` |
 | Start Command | `npm start` |
 
-Environment variables: `MONGO_URI`, `JWT_SECRET`, `NODE_ENV=production`.
+Environment variables: `MONGO_URI`, `JWT_SECRET`, `NODE_ENV=production`,
+`SENDGRID_API_KEY`, `SENDGRID_FROM_EMAIL`.
 
 Verify at `https://<your-service>.onrender.com/health`.
 
 </details>
 
 <details>
-<summary><b>3 · Frontend on Vercel</b></summary>
+<summary><b>4 · Frontend on Vercel</b></summary>
 
 | Setting | Value |
 | :-- | :-- |
@@ -370,7 +425,7 @@ links resolve correctly.
 </details>
 
 <details>
-<summary><b>4 · Close the CORS loop</b></summary>
+<summary><b>5 · Close the CORS loop</b></summary>
 
 Back in Render, set:
 
@@ -404,7 +459,8 @@ with fractional amounts, balance computation, and the consolidated dashboard.
 
 **Manual QA checklist**
 
-1. Register two accounts; check the network response contains no password field.
+1. Sign up: enter an email, receive the code, verify it, then set your profile.
+   Check the network responses never contain the OTP or a password field.
 2. Log out, open the app root — you should be redirected to login.
 3. Log in; the dashboard should issue a single `/api/users/dashboard` request.
 4. Create a trip and confirm **Created by** shows the real creator.

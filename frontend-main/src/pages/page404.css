@@ -29,14 +29,40 @@
   100% { transform: scale(1); }
 }
 
+.page404-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.6rem;
+}
+.page404-logo {
+  height: 38px;
+  width: 38px;
+  object-fit: contain;
+}
+.page404-wordmark {
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: #111827;
+}
+
 .page404-icon {
-  font-size: 3.5rem;
-  margin-bottom: 0.5em;
+  font-size: 3.2rem;
+  color: #2563eb;
+  line-height: 1;
+  margin-bottom: 0.35em;
+  display: flex;
   animation: bounce404 1.2s infinite alternate;
 }
 @keyframes bounce404 {
   0% { transform: translateY(0);}
   100% { transform: translateY(-10px);}
+}
+@media (prefers-reduced-motion: reduce) {
+  .page404-icon { animation: none; }
+  .page404-container, .page404-content { animation: none; }
 }
 
 .page404-title {
@@ -49,10 +75,11 @@
 }
 
 .page404-message {
-  font-size: 1.35rem;
-  color: #1746a2;
-  margin-bottom: 1.5em;
-  font-weight: 700;
+  font-size: 1.05rem;
+  color: #6b7280;
+  margin-bottom: 1.6em;
+  font-weight: 500;
+  line-height: 1.6;
   text-align: center;
   max-width: 340px;
 }

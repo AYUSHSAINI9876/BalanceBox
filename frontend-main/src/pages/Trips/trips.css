@@ -45,8 +45,8 @@
   transform: translateY(-2px) scale(1.04);
 }
 .trips-create-icon {
-  font-size: 1.4em;
-  font-weight: 900;
+  font-size: 1.15em;
+  flex-shrink: 0;
 }
 
 .trips-search-row {

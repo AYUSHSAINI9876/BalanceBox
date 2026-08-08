@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import './trips.css';
 import fetchWithAuth, { API_BASE } from '../../utils/fetchWihAuth';
+import { PlusIcon } from '../../components/Icons/Icons';
 
 
 const Trips = () => {
@@ -61,7 +62,7 @@ const Trips = () => {
             onChange={e => setSearch(e.target.value)}
           />
           <button className="trips-create-btn" onClick={() => navigate('/trips/create')}>
-            <span className="trips-create-icon" aria-hidden="true">+</span> Create Trip
+            <PlusIcon className="trips-create-icon" /> Create Trip
           </button>
         </div>
         <div className="trips-list">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { API_BASE } from '../../utils/fetchWihAuth';
+import AuthBrand from '../../components/AuthBrand/AuthBrand';
 import '../../styles/authForm.css';
 import './Login.css';
 
@@ -15,7 +16,7 @@ const TAGLINES = [
 const DESCRIPTION = `BalanceBox simplifies expense sharing across trips and friends.\nCreate trips, add expenses, track who owes whom, and view category-wise summaries — all in one intuitive dashboard.\nWith real-time balances and clear charts, BalanceBox keeps everyone fair and stress-free so you can focus on making memories.`;
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,20 +33,16 @@ const Login = () => {
     return () => clearInterval(interval);
   }, []);
 
- useEffect(() => {
+  useEffect(() => {
     const params = new URLSearchParams(location.search);
-    if (params.get('session') === 'expired') {
-      setSessionExpired(true);
-    } else {
-      setSessionExpired(false);
-    }
+    setSessionExpired(params.get('session') === 'expired');
   }, [location.search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (!username.trim() || !password.trim()) {
-      setError('Please enter both username and password.');
+    if (!email.trim() || !password) {
+      setError('Please enter both your email and password.');
       return;
     }
     setLoading(true);
@@ -53,9 +50,9 @@ const Login = () => {
       const res = await fetch(`${API_BASE}/api/users/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username.trim(), password })
+        body: JSON.stringify({ email: email.trim(), password })
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || 'Login failed');
       localStorage.setItem('token', data.token);
       navigate(location.state?.from || '/', { replace: true });
@@ -68,33 +65,35 @@ const Login = () => {
   return (
     <div className="login-main-container">
       <div className="login-left">
-        <div className="login-logo-container">
-          <img
-            src="/BalanceBox.svg"
-            alt=""
-            aria-hidden="true"
-            className="login-logo"
-          />
-          <span className="login-logo-wordmark">BalanceBox</span>
-        </div>
-        <h2 className="login-title">Login</h2>
-         {sessionExpired && (
-          <div className="login-error" style={{marginBottom: '1rem', color: '#e53935'}}>Session expired. Please login again.</div>
+        <AuthBrand />
+
+        <h1 className="auth-heading">Login</h1>
+        <p className="auth-subheading auth-subheading-muted">
+          Welcome back — sign in to pick up where you left off.
+        </p>
+
+        {sessionExpired && (
+          <div className="login-error" role="status">
+            Your session expired. Please log in again.
+          </div>
         )}
+
         <form className="login-form" onSubmit={handleSubmit} noValidate>
-          <label className="login-label" htmlFor="login-username">Username</label>
+          <label className="login-label" htmlFor="login-email">Email Id</label>
           <input
-            id="login-username"
-            name="username"
-            type="text"
-            autoComplete="username"
-            placeholder="Username"
-            className="login-input"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
+            id="login-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            inputMode="email"
+            placeholder="you@example.com"
+            className={`login-input${error ? ' has-error' : ''}`}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             disabled={loading}
             autoFocus
           />
+
           <label className="login-label" htmlFor="login-password">Password</label>
           <div className="login-password-wrap">
             <input
@@ -102,8 +101,8 @@ const Login = () => {
               name="password"
               type={showPassword ? 'text' : 'password'}
               autoComplete="current-password"
-              placeholder="Password"
-              className="login-input"
+              placeholder="Your password"
+              className={`login-input${error ? ' has-error' : ''}`}
               value={password}
               onChange={e => setPassword(e.target.value)}
               disabled={loading}
@@ -117,14 +116,20 @@ const Login = () => {
               {showPassword ? 'Hide' : 'Show'}
             </button>
           </div>
+
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? 'Logging in…' : 'Login'}
+          </button>
+
           {error && <div className="login-error" role="alert">{error}</div>}
-          <button type="submit" className="login-btn" disabled={loading}>{loading ? 'Logging in...' : 'Login'}</button>
         </form>
+
         <div className="login-signup-link">
           <span>Don't have an account?</span>
-          <Link to="/register" className="signup-link-btn">Register</Link>
+          <Link to="/register" className="signup-link-btn">Sign-Up</Link>
         </div>
       </div>
+
       <div className="login-right login-info-box">
         <div className="login-info-title">BalanceBox</div>
         <div className="login-info-tagline">{TAGLINES[taglineIdx]}</div>

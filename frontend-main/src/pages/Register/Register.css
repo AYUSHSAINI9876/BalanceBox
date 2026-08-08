@@ -17,47 +17,19 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   background: #fff;
-  padding: 56px 44px 48px 44px;
+  padding: 56px 48px 48px 48px;
   position: relative;
   box-shadow: 0 8px 32px rgba(44, 62, 80, 0.13), 0 1.5px 8px rgba(37,99,235,0.07);
   border-radius: 18px;
   margin: 40px 32px 40px 48px;
-  max-width: 420px;
+  max-width: 460px;
+  overflow-y: auto;
 }
 
-/* ...existing code... */
-.login-signup-link {
-  margin-top: 1.7rem;
-  text-align: center;
-  color: #2563eb;
-  font-size: 1.08rem;
-  background: #f0f6ff;
-  padding: 0.8rem 1.3rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
-  display: inline-block;
-  font-weight: 500;
-  letter-spacing: 0.2px;
-}
-.signup-link-btn {
-  color: #fff;
-  background: #2563eb;
-  margin-left: 0.7em;
-  padding: 0.35em 1.1em;
-  border-radius: 7px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 6px rgba(37,99,235,0.13);
-  font-size: 1.08rem;
-}
-.signup-link-btn:hover {
-  background: #1d4ed8;
-  box-shadow: 0 2px 12px rgba(37,99,235,0.18);
-}
+/* Link and button styling lives in src/styles/authForm.css */
 .login-success {
   background: #eaf1fb;
   color: #2563eb;

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import TripNavbar from '../../../components/Navbar/TripNavbar';
 import fetchWithAuth, { API_BASE } from '../../../utils/fetchWihAuth';
+import { EditIcon, TrashIcon, PlusIcon } from '../../../components/Icons/Icons';
 import './ExpenseLog.css';
 
 
@@ -103,7 +104,7 @@ const ExpenseLog = () => {
               {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
             </select>
             <button className="expense-log-add-btn" onClick={() => navigate(`/trips/${tripId}/addexpense`)}>
-              <span className="expense-log-add-icon" aria-hidden="true">+</span> Add Expense
+              <PlusIcon className="expense-log-add-icon" /> Add Expense
             </button>
           </div>
         </div>
@@ -136,7 +137,7 @@ const ExpenseLog = () => {
                       aria-label={`Edit expense: ${exp.description}`}
                       onClick={() => navigate(`/trips/${tripId}/${exp._id}/editexpense`)}
                     >
-                      <span aria-hidden="true">✏️</span>
+                      <EditIcon />
                     </button>
                     <button
                       className="expense-log-delete-btn"
@@ -144,7 +145,7 @@ const ExpenseLog = () => {
                       aria-label={`Delete expense: ${exp.description}`}
                       onClick={() => handleDeleteClick(exp._id)}
                     >
-                      <span aria-hidden="true">🗑️</span>
+                      <TrashIcon />
                     </button>
                   </div>
                 </div>

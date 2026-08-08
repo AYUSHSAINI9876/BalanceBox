@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const FriendRequest = require('../models/FriendRequest');
 const Trip = require('../models/Trip');
+const { consumeSignupToken } = require('./otpController');
 
 exports.getFriendsBalances = async (req, res) => {
   try {
@@ -55,36 +56,62 @@ exports.getFriendsBalances = async (req, res) => {
 
 
 
+// Accounts can only be created with a signupToken, which is issued solely by
+// verify-otp. That makes proof of email ownership a hard requirement.
 exports.register = async (req, res) => {
-  const { username, password, name } = req.body;
+  const { username, password, name, signupToken } = req.body;
   try {
-    const existingUser = await User.findOne({ username });
-    if (existingUser) return res.status(400).json({ message: 'Username already taken' });
+    let email;
+    try {
+      email = consumeSignupToken(signupToken);
+    } catch {
+      return res.status(401).json({
+        message: 'Email verification expired. Please verify your email again.',
+        code: 'VERIFICATION_REQUIRED',
+      });
+    }
+
+    const [byEmail, byUsername] = await Promise.all([
+      User.findOne({ email }).select('_id').lean(),
+      User.findOne({ username }).select('_id').lean(),
+    ]);
+    if (byEmail) return res.status(409).json({ message: 'That email already has an account.' });
+    if (byUsername) return res.status(409).json({ message: 'Username already taken' });
 
     const hashed = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashed, name });
-
+    const newUser = new User({ username, email, password: hashed, name, emailVerified: true });
     await newUser.save();
+
+    // Log the user straight in — they already proved ownership of the address.
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
     res.status(201).json({
       message: 'User created successfully',
-      user: { id: newUser._id, username: newUser.username, name: newUser.name },
+      token,
+      user: { id: newUser._id, username: newUser.username, name: newUser.name, email: newUser.email },
     });
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ message: 'That email or username is already taken.' });
+    }
     res.status(500).json({ message: error.message });
   }
 };
 
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email: String(email || '').trim().toLowerCase() });
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id, username: user.username, name: user.name } });
+    res.json({
+      token,
+      user: { id: user._id, username: user.username, name: user.name, email: user.email },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
