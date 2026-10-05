@@ -180,16 +180,18 @@ function validateExpensePayload({ description, amount, paidBy, splitBetween, cat
     trip.balanceMatrix = Array(n).fill().map(() => Array(n).fill(0));
   }
 
-  // Calculate per-share
-  const perShare = expense.amount / expense.splitBetween.length;
+  // Split each payer's own contribution equally across the split members, so
+  // with several payers a member owes each payer only a share of what they paid.
+  const splitCount = expense.splitBetween.length;
 
   expense.paidBy.forEach(payer => {
     const payerIndex = members.findIndex(m => m.equals(payer.user));
+    const share = Number(payer.amount) / splitCount;
     expense.splitBetween.forEach(splitUser => {
       const splitIndex = members.findIndex(m => m.equals(splitUser));
       if (splitIndex !== payerIndex) {
-        trip.balanceMatrix[splitIndex][payerIndex] += perShare;
-        trip.balanceMatrix[payerIndex][splitIndex] -= perShare;
+        trip.balanceMatrix[splitIndex][payerIndex] += share;
+        trip.balanceMatrix[payerIndex][splitIndex] -= share;
       }
     });
   });
